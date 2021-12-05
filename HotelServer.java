@@ -54,6 +54,9 @@ public class HotelServer {
 								out.flush();
 								
 								if (text.contentEquals("USER")) {
+									/* 
+									 * CHANGE USER
+									 */
 									text = in.readUTF();
 									user = text;
 									System.out.println("USER " + user + " selected");
