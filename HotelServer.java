@@ -42,19 +42,27 @@ public class HotelServer {
 						 */
 						text = in.readUTF().toUpperCase();
 						if (text.contentEquals("USER")) {
-							System.out.print("USER selected");
 							text = in.readUTF();
 							user = text;
+							System.out.println("USER " + user + " selected");
 							
 							while (!done) {
 								out.writeUTF("Hello, " + user + " please enter your selection:\nRESERVE\nCANCEL\nAVAIL\nQUIT");
 								out.flush();
 								text = in.readUTF().toUpperCase();
-								/*
-								 * USER SELECTION
-								 */
-								if (text.contentEquals("RESERVE")) {
-									System.out.println("RESERVE selected"); 
+								out.writeUTF("you selected: " + text);
+								out.flush();
+								
+								if (text.contentEquals("USER")) {
+									text = in.readUTF();
+									user = text;
+									System.out.println("USER " + user + " selected");
+					
+								} else if (text.contentEquals("RESERVE")) {
+									/*
+									 * RESERVE DATES
+									 */
+									System.out.println(user + " selected RESERVE"); 
 									// validate start date
 									int start = in.readInt();
 									if (start < 31 && start > 0) {
@@ -66,7 +74,7 @@ public class HotelServer {
 												out.writeUTF("Thank you " + user + ", your reservation for December " + start + " to " + end + " has been booked.");
 											} else {
 												// reservation failed
-												out.writeUTF("There was a problem booking your reservation, please try again.");
+												out.writeUTF("There was a problem booking your reservation for December " + start + " to " + end + ", please try again.");
 											}
 											out.flush();
 											
@@ -82,22 +90,44 @@ public class HotelServer {
 										out.flush();
 									}
 								} else if (text.contentEquals("CANCEL")) {
+									System.out.println(user + " selected CANCEL"); 
+									/*
+									 * CANCEL RESERVATIONS
+									 */
+									if (hotel.cancelReservation(user)) {
+										out.writeUTF("Thank you " + user + ", your reservations have been cancelled.");
+									} else {
+										out.writeUTF("You have no reservations to cancel.");
+									}
+									out.flush();
 									
 								} else if (text.contentEquals("AVAIL")) {
+									System.out.println(user + " selected AVAIL"); 
+									/*
+									 * DISPLAY AVAILABILITY
+									 */
+									out.writeUTF(hotel.reservationInformation());
+									out.flush();
 									
 								} else if (text.contentEquals("QUIT")) {
+									System.out.println(user + " selected QUIT"); 
+									/*
+									 * QUIT
+									 */
+									out.writeUTF("Closing Connection");
+									out.flush();
+									done = true;
 									
 								} else {
+									System.out.println(user + " selected BAD INPUT "); 
 									/*
 									 * BAD INPUT
 									 */
 									out.writeUTF("Invalid Command: Closing Connection");
 									out.flush();
+									done = true;
 								}
 							}
-							
-							
-							
 						} else {
 							/*
 							 * NO USER
@@ -108,9 +138,9 @@ public class HotelServer {
 					}
 				} catch (IOException e ) {
 					/*
-					 * CLIENT COULD NOT CONNECT
+					 * CLIENT DISCONNECTED
 					 */
-					System.out.println("Client could not connect.");
+					System.out.println("Client disconnected.");
 				}	
 			}
 		} catch (IOException e ) {
