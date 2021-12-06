@@ -1,11 +1,17 @@
 import java.io.*;
 import java.net.Socket;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -13,7 +19,7 @@ import javafx.stage.Stage;
  * @author Cordell Bonnieux
  *
  */
-public class HotelClient extends Application {
+public class HotelClient {
 	// Client Connection
 	private final int PORT = 1181;
 	private final String HOST = "localhost";
@@ -21,48 +27,38 @@ public class HotelClient extends Application {
 	private DataInputStream in;
 	private OutputStream output;
 	private DataOutputStream out;
-	
-	// UI Structural Elements
-	private BorderPane root;
-	private Scene scene;
-	private Pane center;
-	private VBox right;
-	
-	@Override
-	public void start(Stage stage) throws Exception {
-		// set up GUI
-		root = new BorderPane();
-		// makeGUI(root)
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
+	private String inputText;
+	private String outputText;
+
+	public static void main(String[] args) {
+		//makeGUI("Waiting to connect...", "START");
+
 		
-		// add events
-		
-		// connect to server
-		try (Socket s = new Socket(HOST,PORT)) {
-			boolean connected = true;
-			while (connected) {
-				//main loop
-			}
-		} catch (IOException e) {
-			
-		}
-		
-	}
-	
-	public void makeGUI(BorderPane r) {
-		//r.setTop(value);
-		r.setCenter(makeCenter());
-		r.setRight(makeRight());
-	}
-	public Pane makeCenter() {
-		TextArea output = new TextArea();
-		center = new Pane();
-		return center;
-	}
-	public VBox makeRight() {
-		// something something
-		return right;
+//		// connect to server
+//		try (Socket s = new Socket(HOST,PORT)) {
+//			// set up stream
+//			input = s.getInputStream();
+//			output = s.getOutputStream();
+//			in = new DataInputStream(input);
+//			out = new DataOutputStream(output);
+//		
+//			inputText = in.readUTF();
+//			outputText = "USER";
+//			
+//			/*
+//			 * MAIN LOOP
+//			 */
+//			boolean connected = true;
+//			while (connected) {
+//
+//				makeGUI(inputText, outputText);
+//				
+//				
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			System.out.println("Connection to server failed.");
+//		}
+
 	}
 }
